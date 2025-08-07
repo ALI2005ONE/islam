@@ -105,3 +105,65 @@
     flex-direction: row-reverse;
   }
 }
+
+/* Learning Path Dropdown Styles */
+.lp-dropdown {
+  position: relative;
+  display: inline-block;
+  font-family: var(--font-cairo);
+  width: 100%;
+}
+
+.lp-btn {
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  border: 1px solid hsl(var(--border));
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: var(--font-cairo);
+}
+
+.lp-btn:hover,
+.lp-btn:focus {
+  background-color: hsl(var(--accent));
+  border-color: hsl(var(--ring));
+}
+
+.lp-menu {
+  display: none;
+  position: absolute;
+  top: calc(100% + 5px);
+  right: 0;
+  background: hsl(var(--background));
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  border: 1px solid hsl(var(--border));
+  border-radius: 6px;
+  list-style: none;
+  margin: 0;
+  padding: 4px 0;
+  min-width: 220px;
+  z-index: 1000;
+  direction: rtl;
+}
+
+.lp-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  text-decoration: none;
+  color: hsl(var(--foreground));
+  font-size: 14px;
+  transition: background-color 0.2s ease;
+  font-family: var(--font-cairo);
+}
+
+.lp-item:hover,
+.lp-item:focus {
+  background-color: hsl(var(--accent));
+  outline: none;
+}
+
+.lp-item span {
+  color: hsl(var(--primary));
+  font-size: 16px;
+}

@@ -10,6 +10,7 @@ import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Search, Filter, BookOpen, Star, ChevronLeft } from 'lucide-react';
 import Link from 'next/link';
+import { LearningPathScript } from '@/components/learning-path-script';
 
 interface Hadith {
   id: string;
@@ -84,6 +85,7 @@ export default function Library() {
       <Navbar />
       
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <LearningPathScript />
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2 main-text">مكتبة الأحاديث</h1>
@@ -107,6 +109,38 @@ export default function Library() {
               </div>
             </div>
             
+            {/* Learning Path Dropdown */}
+            <div className="lp-dropdown">
+              <button 
+                className="lp-btn flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1" 
+                aria-haspopup="true" 
+                aria-expanded="false" 
+                id="lpToggle"
+              >
+                <span className="main-text">المسار التعليمي</span>
+                <span className="mr-2">▼</span>
+              </button>
+              <ul className="lp-menu" role="menu" aria-labelledby="lpToggle" id="lpMenu">
+                <li role="none">
+                  <a role="menuitem" href="/path/seeker" className="lp-item main-text">
+                    <span className="ml-2">★</span>
+                    طالب العلم
+                  </a>
+                </li>
+                <li role="none">
+                  <a role="menuitem" href="/path/child" className="lp-item main-text">
+                    <span className="ml-2">★</span>
+                    الطفل المسلم
+                  </a>
+                </li>
+                <li role="none">
+                  <a role="menuitem" href="/path/schools" className="lp-item main-text">
+                    <span className="ml-2">★</span>
+                    المذاهب الإسلامية
+                  </a>
+                </li>
+              </ul>
+            </div>
             <Select value={filterCategory} onValueChange={setFilterCategory}>
               <SelectTrigger>
                 <SelectValue placeholder="الفئة" className="main-text" />
