@@ -57,7 +57,7 @@ export default function Home() {
           <div className="text-center">
             <Badge variant="secondary" className="mb-6 px-4 py-2">
               <Star className="w-4 h-4 mr-2" />
-              <span className="main-text">موثوق به من قبل أكثر من 50,000 متعلم حول العالم</span>
+              <span className="main-text">اطلبوا العِلمَ مِنَ المهدِ إِلى اللَحدِ.</span>
             </Badge>
             
             <h1 className="text-4xl sm:text-6xl font-bold text-gray-900 mb-6 main-text">
