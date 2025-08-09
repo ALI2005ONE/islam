@@ -114,9 +114,24 @@ export default function Home() {
             {features.map((feature, index) => {
               const Icon = feature.icon;
               const isHadithLibrary = index === 0; // First feature is the Hadith library
+              const isRulingsCard = index === 1; // Second feature is the Rulings card
               return (
                 isHadithLibrary ? (
                   <Link key={index} href="/library" className="block">
+                    <Card className="card-hover border-0 shadow-md cursor-pointer">
+                      <CardHeader>
+                        <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
+                          <Icon className="h-6 w-6 text-primary" />
+                        </div>
+                        <CardTitle className="text-xl main-text">{feature.title}</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <CardDescription className="text-base main-text">{feature.description}</CardDescription>
+                      </CardContent>
+                    </Card>
+                  </Link>
+                ) : isRulingsCard ? (
+                  <Link key={index} href="/rulings" className="block">
                     <Card className="card-hover border-0 shadow-md cursor-pointer">
                       <CardHeader>
                         <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
