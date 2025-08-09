@@ -113,8 +113,10 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {features.map((feature, index) => {
               const Icon = feature.icon;
+              const isHadithLibrary = index === 0; // First feature is the Hadith library
               return (
-                <Card key={index} className="card-hover border-0 shadow-md">
+                <Card key={index} className={`card-hover border-0 shadow-md ${isHadithLibrary ? 'cursor-pointer' : ''}`} 
+                      onClick={isHadithLibrary ? () => window.location.href = '/library' : undefined}>
                   <CardHeader>
                     <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                       <Icon className="h-6 w-6 text-primary" />
