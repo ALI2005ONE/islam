@@ -130,7 +130,7 @@
 }
 
 .lp-menu {
-  display: none;
+  display: block;
   position: absolute;
   top: calc(100% + 5px);
   right: 0;

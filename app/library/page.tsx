@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Navbar } from '@/components/layout/navbar';
 import { Footer } from '@/components/layout/footer';
 import { Button } from '@/components/ui/button';
@@ -10,7 +10,6 @@ import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Search, Filter, BookOpen, Star, ChevronLeft } from 'lucide-react';
 import Link from 'next/link';
-import { LearningPathScript } from '@/components/learning-path-script';
 
 interface Hadith {
   id: string;
@@ -57,9 +56,33 @@ export default function Library() {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterCategory, setFilterCategory] = useState('all');
   const [filterClassification, setFilterClassification] = useState('all');
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const categories = ['all', 'النيات', 'الأخلاق', 'الصلاة', 'الزكاة', 'الحج', 'الدين'];
   const classifications = ['all', 'صحيح', 'حسن', 'ضعيف'];
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsDropdownOpen(false);
+      }
+    }
+
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === 'Escape') {
+        setIsDropdownOpen(false);
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
 
   const filteredHadiths = hadiths.filter(hadith => {
     const matchesSearch = hadith.text.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -85,7 +108,6 @@ export default function Library() {
       <Navbar />
       
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <LearningPathScript />
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2 main-text">مكتبة الأحاديث</h1>
@@ -110,36 +132,38 @@ export default function Library() {
             </div>
             
             {/* Learning Path Dropdown */}
-            <div className="lp-dropdown">
+            <div className="lp-dropdown" ref={dropdownRef}>
               <button 
                 className="lp-btn flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1" 
                 aria-haspopup="true" 
-                aria-expanded="false" 
-                id="lpToggle"
+                aria-expanded={isDropdownOpen}
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
               >
                 <span className="main-text">المسار التعليمي</span>
                 <span className="mr-2">▼</span>
               </button>
-              <ul className="lp-menu" role="menu" aria-labelledby="lpToggle" id="lpMenu">
-                <li role="none">
-                  <a role="menuitem" href="/path/seeker" className="lp-item main-text">
-                    <span className="ml-2">★</span>
-                    طالب العلم
-                  </a>
-                </li>
-                <li role="none">
-                  <a role="menuitem" href="/path/child" className="lp-item main-text">
-                    <span className="ml-2">★</span>
-                    الطفل المسلم
-                  </a>
-                </li>
-                <li role="none">
-                  <a role="menuitem" href="/path/schools" className="lp-item main-text">
-                    <span className="ml-2">★</span>
-                    المذاهب الإسلامية
-                  </a>
-                </li>
-              </ul>
+              {isDropdownOpen && (
+                <ul className="lp-menu" role="menu">
+                  <li role="none">
+                    <a role="menuitem" href="/path/seeker" className="lp-item main-text">
+                      <span className="ml-2">★</span>
+                      طالب العلم
+                    </a>
+                  </li>
+                  <li role="none">
+                    <a role="menuitem" href="/path/child" className="lp-item main-text">
+                      <span className="ml-2">★</span>
+                      الطفل المسلم
+                    </a>
+                  </li>
+                  <li role="none">
+                    <a role="menuitem" href="/path/schools" className="lp-item main-text">
+                      <span className="ml-2">★</span>
+                      المذاهب الإسلامية
+                    </a>
+                  </li>
+                </ul>
+              )}
             </div>
             <Select value={filterCategory} onValueChange={setFilterCategory}>
               <SelectTrigger>
