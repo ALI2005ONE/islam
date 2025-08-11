@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Navbar } from '@/components/layout/navbar';
 import { Footer } from '@/components/layout/footer';
+import { AdvancedSearch } from '@/components/ui/advanced-search';
 import { BookOpen, Scale, Trophy, Users, Star, ArrowLeft, Search, Target, Clock } from 'lucide-react';
 import Link from 'next/link';
 
@@ -177,8 +178,19 @@ export default function Home() {
                 ) : (
                   <Card key={index} className="card-hover border-0 shadow-md">
                     <CardHeader>
-                      <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                        <Icon className="h-6 w-6 text-primary" />
+                      <div className="flex items-center justify-between mb-4">
+                        <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+                          <Icon className="h-6 w-6 text-primary" />
+                        </div>
+                        {index === 4 && ( // Advanced Search feature for the 5th card
+                          <AdvancedSearch 
+                            onSearch={(searchTerm, category) => {
+                              console.log('Search executed:', { searchTerm, category });
+                              // You can add navigation logic here
+                              // router.push(`/search?q=${searchTerm}&category=${category}`);
+                            }}
+                          />
+                        )}
                       </div>
                       <CardTitle className="text-xl main-text">{feature.title}</CardTitle>
                     </CardHeader>
