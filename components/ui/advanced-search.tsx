@@ -1,5 +1,3 @@
-
-
 'use client';
 
 import { useState } from 'react';
@@ -8,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Filter, Search, Loader2 } from 'lucide-react';
+import { Search, Loader2 } from 'lucide-react';
 
 interface AdvancedSearchProps {
   onSearch?: (searchTerm: string, category: string) => void;
@@ -29,25 +27,14 @@ export function AdvancedSearch({ onSearch, className = '' }: AdvancedSearchProps
 
   const handleSearch = async () => {
     if (!searchTerm.trim()) return;
-
     setIsLoading(true);
-    
     try {
-      // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // Log the search data or trigger API call
       console.log('Advanced Search:', { searchTerm, category });
-      
-      // Call the onSearch callback if provided
       if (onSearch) {
         onSearch(searchTerm, category);
       }
-      
-      // Close modal after successful search
       setIsOpen(false);
-      
-      // Reset form
       setSearchTerm('');
       setCategory('all');
     } catch (error) {
@@ -72,24 +59,24 @@ export function AdvancedSearch({ onSearch, className = '' }: AdvancedSearchProps
           size="icon"
           className={`rounded-full hover:shadow-lg transition-all duration-300 hover:scale-105 border-2 hover:border-primary/30 ${className}`}
         >
-          <Filter className="h-4 w-4" />
+          <Search className="h-5 w-5" />
         </Button>
       </DialogTrigger>
       
-      <DialogContent className="sm:max-w-md rounded-2xl border-0 shadow-2xl bg-white/95 backdrop-blur-sm">
+      <DialogContent className="max-w-full h-screen rounded-none border-0 shadow-none bg-white p-8 flex flex-col">
         <DialogHeader className="space-y-3">
-          <DialogTitle className="text-2xl font-bold text-center main-text bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+          <DialogTitle className="text-3xl font-bold text-center bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
             البحث المتقدم
           </DialogTitle>
-          <DialogDescription className="text-center text-gray-600 main-text">
+          <DialogDescription className="text-center text-gray-600">
             ابحث في الأحكام والأحاديث باستخدام مرشحات مخصصة
           </DialogDescription>
         </DialogHeader>
         
-        <div className="space-y-6 py-4">
+        <div className="space-y-6 py-4 flex-1 overflow-y-auto">
           {/* Search Input */}
           <div className="space-y-2">
-            <Label htmlFor="search-term" className="text-sm font-medium main-text">
+            <Label htmlFor="search-term" className="text-sm font-medium">
               كلمات البحث
             </Label>
             <div className="relative">
@@ -99,7 +86,7 @@ export function AdvancedSearch({ onSearch, className = '' }: AdvancedSearchProps
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder="أدخل كلمات البحث..."
-                className="pr-10 rounded-xl border-2 focus:border-primary/50 transition-colors main-text"
+                className="pr-10 rounded-xl border-2 focus:border-primary/50 transition-colors"
                 disabled={isLoading}
               />
             </div>
@@ -107,7 +94,7 @@ export function AdvancedSearch({ onSearch, className = '' }: AdvancedSearchProps
 
           {/* Category Select */}
           <div className="space-y-2">
-            <Label htmlFor="category" className="text-sm font-medium main-text">
+            <Label htmlFor="category" className="text-sm font-medium">
               الفئة
             </Label>
             <Select value={category} onValueChange={setCategory} disabled={isLoading}>
@@ -117,7 +104,7 @@ export function AdvancedSearch({ onSearch, className = '' }: AdvancedSearchProps
               <SelectContent className="rounded-xl">
                 {categories.map((cat) => (
                   <SelectItem key={cat.value} value={cat.value}>
-                    <span className="main-text">{cat.label}</span>
+                    {cat.label}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -126,12 +113,12 @@ export function AdvancedSearch({ onSearch, className = '' }: AdvancedSearchProps
         </div>
 
         {/* Action Buttons */}
-        <div className="flex items-center justify-between space-x-3 rtl:space-x-reverse pt-4">
+        <div className="flex items-center justify-between pt-4">
           <Button
             variant="outline"
             onClick={handleCancel}
             disabled={isLoading}
-            className="rounded-full px-6 hover:bg-gray-50 transition-colors main-text"
+            className="rounded-full px-6 hover:bg-gray-50 transition-colors"
           >
             إلغاء
           </Button>
@@ -139,7 +126,7 @@ export function AdvancedSearch({ onSearch, className = '' }: AdvancedSearchProps
           <Button
             onClick={handleSearch}
             disabled={isLoading || !searchTerm.trim()}
-            className="rounded-full px-6 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 transition-all duration-300 hover:shadow-lg main-text"
+            className="rounded-full px-6 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 transition-all duration-300 hover:shadow-lg"
           >
             {isLoading ? (
               <>
