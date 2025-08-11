@@ -27,13 +27,19 @@ export function AdvancedSearch({ onSearch, className = '' }: AdvancedSearchProps
 
   const handleSearch = async () => {
     if (!searchTerm.trim()) return;
+
     setIsLoading(true);
+
     try {
+      // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1500));
+
       console.log('Advanced Search:', { searchTerm, category });
+
       if (onSearch) {
         onSearch(searchTerm, category);
       }
+
       setIsOpen(false);
       setSearchTerm('');
       setCategory('all');
@@ -59,24 +65,24 @@ export function AdvancedSearch({ onSearch, className = '' }: AdvancedSearchProps
           size="icon"
           className={`rounded-full hover:shadow-lg transition-all duration-300 hover:scale-105 border-2 hover:border-primary/30 ${className}`}
         >
-          <Search className="h-5 w-5" />
+          <Search className="h-4 w-4" />
         </Button>
       </DialogTrigger>
-      
-      <DialogContent className="max-w-full h-screen rounded-none border-0 shadow-none bg-white p-8 flex flex-col">
+
+      <DialogContent className="sm:max-w-md rounded-2xl border-0 shadow-2xl bg-white/95 backdrop-blur-sm">
         <DialogHeader className="space-y-3">
-          <DialogTitle className="text-3xl font-bold text-center bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+          <DialogTitle className="text-2xl font-bold text-center main-text bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
             البحث المتقدم
           </DialogTitle>
-          <DialogDescription className="text-center text-gray-600">
+          <DialogDescription className="text-center text-gray-600 main-text">
             ابحث في الأحكام والأحاديث باستخدام مرشحات مخصصة
           </DialogDescription>
         </DialogHeader>
-        
-        <div className="space-y-6 py-4 flex-1 overflow-y-auto">
+
+        <div className="space-y-6 py-4">
           {/* Search Input */}
           <div className="space-y-2">
-            <Label htmlFor="search-term" className="text-sm font-medium">
+            <Label htmlFor="search-term" className="text-sm font-medium main-text">
               كلمات البحث
             </Label>
             <div className="relative">
@@ -86,7 +92,7 @@ export function AdvancedSearch({ onSearch, className = '' }: AdvancedSearchProps
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder="أدخل كلمات البحث..."
-                className="pr-10 rounded-xl border-2 focus:border-primary/50 transition-colors"
+                className="pr-10 rounded-xl border-2 focus:border-primary/50 transition-colors main-text"
                 disabled={isLoading}
               />
             </div>
@@ -94,7 +100,7 @@ export function AdvancedSearch({ onSearch, className = '' }: AdvancedSearchProps
 
           {/* Category Select */}
           <div className="space-y-2">
-            <Label htmlFor="category" className="text-sm font-medium">
+            <Label htmlFor="category" className="text-sm font-medium main-text">
               الفئة
             </Label>
             <Select value={category} onValueChange={setCategory} disabled={isLoading}>
@@ -104,7 +110,7 @@ export function AdvancedSearch({ onSearch, className = '' }: AdvancedSearchProps
               <SelectContent className="rounded-xl">
                 {categories.map((cat) => (
                   <SelectItem key={cat.value} value={cat.value}>
-                    {cat.label}
+                    <span className="main-text">{cat.label}</span>
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -113,20 +119,20 @@ export function AdvancedSearch({ onSearch, className = '' }: AdvancedSearchProps
         </div>
 
         {/* Action Buttons */}
-        <div className="flex items-center justify-between pt-4">
+        <div className="flex items-center justify-between space-x-3 rtl:space-x-reverse pt-4">
           <Button
             variant="outline"
             onClick={handleCancel}
             disabled={isLoading}
-            className="rounded-full px-6 hover:bg-gray-50 transition-colors"
+            className="rounded-full px-6 hover:bg-gray-50 transition-colors main-text"
           >
             إلغاء
           </Button>
-          
+
           <Button
             onClick={handleSearch}
             disabled={isLoading || !searchTerm.trim()}
-            className="rounded-full px-6 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 transition-all duration-300 hover:shadow-lg"
+            className="rounded-full px-6 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 transition-all duration-300 hover:shadow-lg main-text"
           >
             {isLoading ? (
               <>
