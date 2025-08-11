@@ -1,3 +1,5 @@
+ 'use client';
+
 'use client';
 
 import { useState } from 'react';
@@ -6,7 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Search, Loader2 } from 'lucide-react';
+import { Filter, Search, Loader2 } from 'lucide-react';
 
 interface AdvancedSearchProps {
   onSearch?: (searchTerm: string, category: string) => void;
@@ -34,13 +36,18 @@ export function AdvancedSearch({ onSearch, className = '' }: AdvancedSearchProps
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1500));
 
+      // Log the search data or trigger API call
       console.log('Advanced Search:', { searchTerm, category });
 
+      // Call the onSearch callback if provided
       if (onSearch) {
         onSearch(searchTerm, category);
       }
 
+      // Close modal after successful search
       setIsOpen(false);
+
+      // Reset form
       setSearchTerm('');
       setCategory('all');
     } catch (error) {
@@ -65,7 +72,7 @@ export function AdvancedSearch({ onSearch, className = '' }: AdvancedSearchProps
           size="icon"
           className={`rounded-full hover:shadow-lg transition-all duration-300 hover:scale-105 border-2 hover:border-primary/30 ${className}`}
         >
-          <Search className="h-4 w-4" />
+          <Filter className="h-4 w-4" />
         </Button>
       </DialogTrigger>
 
@@ -150,4 +157,3 @@ export function AdvancedSearch({ onSearch, className = '' }: AdvancedSearchProps
       </DialogContent>
     </Dialog>
   );
-}
