@@ -1,43 +1,66 @@
 'use client';
+
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Navbar } from '@/components/layout/navbar';
 import { Footer } from '@/components/layout/footer';
 import { AdvancedSearch } from '@/components/ui/advanced-search';
-import { BookOpen, Scale, Trophy, Users, Star, ArrowLeft, Search, Target, Clock } from 'lucide-react';
+import {
+  BookOpen,
+  Scale,
+  Trophy,
+  Users,
+  Star,
+  ArrowLeft,
+  Search,
+  Target,
+} from 'lucide-react';
 import Link from 'next/link';
 
 const features = [
   {
     icon: BookOpen,
     title: 'مكتبة شاملة للأحاديث',
-    description: 'الوصول إلى آلاف الأحاديث الصحيحة مع التصنيفات التفصيلية والمصادر والتعليقات العلمية.',
+    description:
+      'الوصول إلى آلاف الأحاديث الصحيحة مع التصنيفات التفصيلية والمصادر والتعليقات العلمية.',
   },
   {
     icon: Scale,
     title: 'أحكام فقهية علمية',
-    description: 'استكشاف أحكام الفقه الإسلامي التفصيلية من جميع المذاهب الرئيسية مع المراجع المتقاطعة.',
+    description:
+      'استكشاف أحكام الفقه الإسلامي التفصيلية من جميع المذاهب الرئيسية مع المراجع المتقاطعة.',
   },
   {
     icon: Trophy,
     title: 'تتبع التقدم',
-    description: 'راقب رحلة التعلم الخاصة بك مع التحليلات التفصيلية والمعالم وخطط الدراسة الشخصية.',
+    description:
+      'راقب رحلة التعلم الخاصة بك مع التحليلات التفصيلية والمعالم وخطط الدراسة الشخصية.',
   },
   {
     icon: Users,
     title: 'التعلم المجتمعي',
-    description: 'تواصل مع زملاء التعلم وشارك في المناقشات وتعلم من العلماء ذوي الخبرة.',
+    description:
+      'تواصل مع زملاء التعلم وشارك في المناقشات وتعلم من العلماء ذوي الخبرة.',
   },
   {
     icon: Search,
     title: 'البحث المتقدم',
-    description: 'العثور على أحاديث وأحكام محددة باستخدام مرشحات البحث القوية حسب الموضوع والراوي والصحة.',
+    description:
+      'العثور على أحاديث وأحكام محددة باستخدام مرشحات البحث القوية حسب الموضوع والراوي والصحة.',
   },
   {
     icon: Target,
     title: 'اختبارات تكيفية',
-    description: 'اختبر معرفتك بالاختبارات الذكية التي تتكيف مع تقدم التعلم والمناطق الضعيفة.',
+    description:
+      'اختبر معرفتك بالاختبارات الذكية التي تتكيف مع تقدم التعلم والمناطق الضعيفة.',
   },
 ];
 
@@ -49,10 +72,19 @@ const stats = [
 ];
 
 export default function Home() {
+  // state to control AdvancedSearch dialog
+  const [searchOpen, setSearchOpen] = useState(false);
+
+  // callback when search executed from modal
+  const handleAdvancedSearch = (searchTerm: string, category: string) => {
+    console.log('Search executed:', { searchTerm, category });
+    // place navigation logic here if you want, e.g. router.push(`/search?term=${...}`)
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
       <Navbar />
-      
+
       {/* Hero Section */}
       <section className="relative py-20 lg:py-32">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -61,16 +93,16 @@ export default function Home() {
               <Star className="w-4 h-4 mr-2" />
               <span className="main-text">اطلبوا العِلمَ مِنَ المهدِ إِلى اللَحدِ.</span>
             </Badge>
-            
+
             <h1 className="text-4xl sm:text-6xl font-bold text-gray-900 mb-6 main-text">
               أتقن المعرفة الإسلامية
               <span className="block text-primary">بثقة</span>
             </h1>
-            
+
             <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto main-text">
               منصة شاملة للتعليم الإسلامي تتضمن مجموعات الأحاديث الأصيلة وأحكام الفقه العلمية وتجارب التعلم الشخصية الموجهة بالمنهج التقليدي.
             </p>
-            
+
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" asChild className="text-lg px-8 py-6">
                 <Link href="/library">
@@ -111,16 +143,45 @@ export default function Home() {
               تجمع منصتنا بين النصوص الإسلامية الأصيلة وتكنولوجيا التعلم الحديثة لتوفير تجربة تعليمية لا مثيل لها.
             </p>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {features.map((feature, index) => {
               const Icon = feature.icon;
-              const isHadithLibrary = index === 0; // First feature is the Hadith library
-              const isRulingsCard = index === 1; // Second feature is the Rulings card
-              const isProgressCard = index === 2; // Third feature is the Progress card
-              const isCommunityCard = index === 3; // Fourth feature is the Community card
-              return (
-                isHadithLibrary ? (
+              const isHadithLibrary = index === 0;
+              const isRulingsCard = index === 1;
+              const isProgressCard = index === 2;
+              const isCommunityCard = index === 3;
+
+              // For the "Advanced Search" card (index === 4) make the whole card clickable and open modal
+              if (index === 4) {
+                return (
+                  <div key={index}>
+                    <Card
+                      className="card-hover border-0 shadow-md cursor-pointer"
+                      onClick={() => setSearchOpen(true)}
+                      role="button"
+                      tabIndex={0}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') setSearchOpen(true);
+                      }}
+                    >
+                      <CardHeader>
+                        <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
+                          <Icon className="h-6 w-6 text-primary" />
+                        </div>
+                        <CardTitle className="text-xl main-text">{feature.title}</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <CardDescription className="text-base main-text">{feature.description}</CardDescription>
+                      </CardContent>
+                    </Card>
+                  </div>
+                );
+              }
+
+              // other cards (link or simple)
+              if (isHadithLibrary) {
+                return (
                   <Link key={index} href="/library" className="block">
                     <Card className="card-hover border-0 shadow-md cursor-pointer">
                       <CardHeader>
@@ -134,7 +195,11 @@ export default function Home() {
                       </CardContent>
                     </Card>
                   </Link>
-                ) : isRulingsCard ? (
+                );
+              }
+
+              if (isRulingsCard) {
+                return (
                   <Link key={index} href="/rulings" className="block">
                     <Card className="card-hover border-0 shadow-md cursor-pointer">
                       <CardHeader>
@@ -148,7 +213,11 @@ export default function Home() {
                       </CardContent>
                     </Card>
                   </Link>
-                ) : isProgressCard ? (
+                );
+              }
+
+              if (isProgressCard) {
+                return (
                   <Link key={index} href="/dashboard" className="block">
                     <Card className="card-hover border-0 shadow-md cursor-pointer">
                       <CardHeader>
@@ -162,7 +231,11 @@ export default function Home() {
                       </CardContent>
                     </Card>
                   </Link>
-                ) : isCommunityCard ? (
+                );
+              }
+
+              if (isCommunityCard) {
+                return (
                   <Link key={index} href="/community" className="block">
                     <Card className="card-hover border-0 shadow-md cursor-pointer">
                       <CardHeader>
@@ -176,30 +249,22 @@ export default function Home() {
                       </CardContent>
                     </Card>
                   </Link>
-                ) : (
-                  <Card key={index} className="card-hover border-0 shadow-md">
-                    <CardHeader>
-                      <div className="flex items-center justify-between mb-4">
-                        <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-                          <Icon className="h-6 w-6 text-primary" />
-                        </div>
-                        {index === 4 && ( // Advanced Search feature for the 5th card
-                          <AdvancedSearch 
-                            onSearch={(searchTerm, category) => {
-                              console.log('Search executed:', { searchTerm, category });
-                              // You can add navigation logic here
-                              // router.push(`/search?q=${searchTerm}&category=${category}`);
-                            }}
-                          />
-                        )}
-                      </div>
-                      <CardTitle className="text-xl main-text">{feature.title}</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <CardDescription className="text-base main-text">{feature.description}</CardDescription>
-                    </CardContent>
-                  </Card>
-                )
+                );
+              }
+
+              // fallback
+              return (
+                <Card key={index} className="card-hover border-0 shadow-md">
+                  <CardHeader>
+                    <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
+                      <Icon className="h-6 w-6 text-primary" />
+                    </div>
+                    <CardTitle className="text-xl main-text">{feature.title}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <CardDescription className="text-base main-text">{feature.description}</CardDescription>
+                  </CardContent>
+                </Card>
               );
             })}
           </div>
@@ -227,6 +292,9 @@ export default function Home() {
       </section>
 
       <Footer />
+
+      {/* AdvancedSearch modal (controlled by searchOpen) */}
+      <AdvancedSearch open={searchOpen} setOpen={setSearchOpen} onSearch={handleAdvancedSearch} />
     </div>
   );
 }
