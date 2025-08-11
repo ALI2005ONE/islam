@@ -1,22 +1,27 @@
 'use client';
 
 import { useState } from 'react';
+import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Search, Loader2 } from 'lucide-react';
 
 interface AdvancedSearchProps {
   onSearch?: (searchTerm: string, category: string) => void;
-  className?: string;
+  open?: boolean;
+  setOpen?: (state: boolean) => void;
 }
 
-export function AdvancedSearch({ onSearch, className = '' }: AdvancedSearchProps) {
-  const [isOpen, setIsOpen] = useState(false);
+export function AdvancedSearch({ onSearch, open, setOpen }: AdvancedSearchProps) {
+  const [internalOpen, setInternalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [category, setCategory] = useState('all');
   const [isLoading, setIsLoading] = useState(false);
+
+  const isOpen = open !== undefined ? open : internalOpen;
+  const handleSetOpen = setOpen || setInternalOpen;
 
   const categories = [
     { value: 'all', label: 'الكل' },
@@ -30,8 +35,10 @@ export function AdvancedSearch({ onSearch, className = '' }: AdvancedSearchProps
     setIsLoading(true);
     try {
       await new Promise(resolve => setTimeout(resolve, 1500));
-      if (onSearch) onSearch(searchTerm, category);
-      setIsOpen(false);
+      if (onSearch) {
+        onSearch(searchTerm, category);
+      }
+      handleSetOpen(false);
       setSearchTerm('');
       setCategory('all');
     } catch (error) {
@@ -42,26 +49,15 @@ export function AdvancedSearch({ onSearch, className = '' }: AdvancedSearchProps
   };
 
   const handleCancel = () => {
-    setIsOpen(false);
+    handleSetOpen(false);
     setSearchTerm('');
     setCategory('all');
     setIsLoading(false);
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>
-        {/* مربع البحث القديم */}
-        <div
-          onClick={() => setIsOpen(true)}
-          className={`flex items-center border rounded-full px-4 py-2 cursor-pointer hover:shadow-md transition-all ${className}`}
-        >
-          <Search className="h-4 w-4 text-gray-400 mr-2" />
-          <span className="text-gray-500">ابحث...</span>
-        </div>
-      </DialogTrigger>
-
-      <DialogContent className="sm:max-w-md rounded-2xl border-0 shadow-2xl bg-white/95 backdrop-blur-sm">
+    <Dialog open={isOpen} onOpenChange={handleSetOpen}>
+      <DialogContent className="sm:max-w-lg rounded-2xl border-0 shadow-2xl bg-white/95 backdrop-blur-sm">
         <DialogHeader className="space-y-3">
           <DialogTitle className="text-2xl font-bold text-center bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
             البحث المتقدم
@@ -70,13 +66,10 @@ export function AdvancedSearch({ onSearch, className = '' }: AdvancedSearchProps
             ابحث في الأحكام والأحاديث باستخدام مرشحات مخصصة
           </DialogDescription>
         </DialogHeader>
-        
+
         <div className="space-y-6 py-4">
-          {/* Search Input */}
           <div className="space-y-2">
-            <Label htmlFor="search-term" className="text-sm font-medium">
-              كلمات البحث
-            </Label>
+            <Label htmlFor="search-term" className="text-sm font-medium">كلمات البحث</Label>
             <div className="relative">
               <Search className="absolute right-3 top-3 h-4 w-4 text-gray-400" />
               <Input
@@ -84,19 +77,16 @@ export function AdvancedSearch({ onSearch, className = '' }: AdvancedSearchProps
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder="أدخل كلمات البحث..."
-                className="pr-10 rounded-xl border-2 focus:border-primary/50 transition-colors"
+                className="pr-10 rounded-xl border-2 focus:border-primary/50"
                 disabled={isLoading}
               />
             </div>
           </div>
 
-          {/* Category Select */}
           <div className="space-y-2">
-            <Label htmlFor="category" className="text-sm font-medium">
-              الفئة
-            </Label>
+            <Label htmlFor="category" className="text-sm font-medium">الفئة</Label>
             <Select value={category} onValueChange={setCategory} disabled={isLoading}>
-              <SelectTrigger className="rounded-xl border-2 focus:border-primary/50 transition-colors">
+              <SelectTrigger className="rounded-xl border-2 focus:border-primary/50">
                 <SelectValue placeholder="اختر الفئة" />
               </SelectTrigger>
               <SelectContent className="rounded-xl">
@@ -110,33 +100,25 @@ export function AdvancedSearch({ onSearch, className = '' }: AdvancedSearchProps
           </div>
         </div>
 
-        {/* Action Buttons */}
-        <div className="flex items-center justify-between pt-4">
-          <button
-            onClick={handleCancel}
-            disabled={isLoading}
-            className="rounded-full px-6 py-2 border hover:bg-gray-50"
-          >
+        <div className="flex items-center justify-between space-x-3 rtl:space-x-reverse pt-4">
+          <Button variant="outline" onClick={handleCancel} disabled={isLoading} className="rounded-full px-6">
             إلغاء
-          </button>
-          
-          <button
+          </Button>
+          <Button
             onClick={handleSearch}
             disabled={isLoading || !searchTerm.trim()}
-            className="rounded-full px-6 py-2 bg-primary text-white hover:opacity-90"
+            className="rounded-full px-6 bg-gradient-to-r from-primary to-primary/80"
           >
             {isLoading ? (
               <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                جاري البحث...
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" /> جاري البحث...
               </>
             ) : (
               <>
-                <Search className="mr-2 h-4 w-4" />
-                بحث
+                <Search className="mr-2 h-4 w-4" /> بحث
               </>
             )}
-          </button>
+          </Button>
         </div>
       </DialogContent>
     </Dialog>
