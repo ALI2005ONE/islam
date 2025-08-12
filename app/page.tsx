@@ -178,7 +178,7 @@ export default function Home() {
                   </div>
                 );
               }
-
+                  <Link key={index} href={feature.href} className="block">
               // other cards (link or simple)
               if (isHadithLibrary) {
                 return (
