@@ -58,7 +58,7 @@ const features = [
   },
   {
     icon: Target,
-    title: 'اختبارات تكيفية',
+    title: 'الاختبارات التكيفية',
     description:
       'اختبر معرفتك بالاختبارات الذكية التي تتكيف مع تقدم التعلم والمناطق الضعيفة.',
   },
@@ -178,7 +178,7 @@ export default function Home() {
                   </div>
                 );
               }
-
+                  <Link key={index} href={feature.href} className="block">
               // other cards (link or simple)
               if (isHadithLibrary) {
                 return (
