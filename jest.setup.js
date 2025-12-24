@@ -30,6 +30,30 @@ jest.mock('framer-motion', () => ({
   AnimatePresence: ({ children }) => children,
 }))
 
+// Mock hooks
+jest.mock('@/hooks/useAdaptiveTest', () => ({
+  useAdaptiveTest: jest.fn(() => ({
+    currentQuestion: null,
+    currentAnswer: null,
+    sessionStats: {
+      questionsAnswered: 0,
+      correctAnswers: 0,
+      accuracy: 0,
+      currentDifficulty: 5,
+    },
+    isLoading: false,
+    error: null,
+    submitAnswer: jest.fn(),
+    skipQuestion: jest.fn(),
+    flagQuestion: jest.fn(),
+    nextQuestion: jest.fn(),
+    previousQuestion: jest.fn(),
+    canGoNext: false,
+    canGoPrevious: false,
+    endTest: jest.fn(),
+  })),
+}))
+
 // Mock localStorage
 const localStorageMock = {
   getItem: jest.fn(),
